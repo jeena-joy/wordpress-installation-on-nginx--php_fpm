@@ -1,8 +1,6 @@
 # Wordpress-installation-on-nginx-php_fpm
 
 
-
-```sh
 ## Execution
 - Running a syntax check
 ```sh
@@ -12,7 +10,7 @@ docker-compose config
 ```sh
 docker-compose up -d
 ```
-```
+
 
 ```sh
 # tree .
