@@ -1,0 +1,51 @@
+---
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.6
+    container_name: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    restart: always
+    networks:
+      - wordsite
+
+  wordpress:
+    image: wordpress:php7.3-fpm-alpine
+    container_name: wordpress-fpm
+    volumes:
+      - wpdata:/var/www/html
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root123
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    restart: always
+    networks:
+      - wordsite
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - ./nginx-conf/:/etc/nginx/conf.d/
+      - wpdata:/var/www/html
+    ports:
+      - 8080:80
+    networks:
+      - wordsite
+
+volumes:
+  dbdata:
+  wpdata:
+networks:
+  wordsite: 
